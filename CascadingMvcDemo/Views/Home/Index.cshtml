@@ -1,0 +1,142 @@
+﻿@model Product
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+
+
+
+    <div class="text-center">
+        <h2>Cascading  </h2>
+        <div class="row form-group p-4 border m-2">
+            <div class="col-2">
+                Category
+            </div>
+            <div class="col-4">
+                <select asp-for="CategoryId" class="form-select" id="categoryId"
+                        asp-items="@ViewBag.categories">
+                    <option disabled selected>--Select Category--</option>
+                </select>
+            </div>
+            <div class="col-2">
+                Product
+            </div>
+            <div class="col-4">
+                <select asp-for="Id" class="form-select" id="productId"></select>
+            </div>
+
+
+            <div class="col-2">
+                ProductDetails
+            </div>
+            <div class="col-4">
+                <select asp-for="Id" class="form-select" id="productdetailsId"></select>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div  id="viewdata"> </div>
+
+
+
+
+</div>
+
+
+@section Scripts{
+    <script>
+
+        $("#categoryId").change(function () {
+            getProductByCategoryId();
+        });
+
+        $("#productId").change(function () {
+            getProductdetailsByCategoryId();
+        });
+
+        $("#productdetailsId").change(function () {
+            getProductDetailsView();
+        });
+
+        var getProductDetailsView = function () {
+            debugger;
+            $.ajax({
+                url: '@Url.Action("GetProductdetailsView", "Home")',
+                type: 'GET',
+                data: {
+                    productDetailsId: $('#productdetailsId').val(),
+                },
+                success: function (data) {
+                    // $('#productDetailsContainer tbody').empty();
+
+                    $('#viewdata').html(data);
+
+                    // Now, load _ProductDetailsPartial.cshtml directly into the viewdata div
+
+
+
+                    // // Append the HTML from the partial view to the table body
+                    // $('#productDetailsContainer tbody').append(data);
+
+                   
+                }
+            });
+        }
+
+
+
+        // 
+
+
+
+
+        var getProductByCategoryId = function () {
+            debugger;
+            $.ajax({
+                url: '@Url.Action("GetProductByCategoryId","Home")',
+                type: 'GET',
+                data: {
+                    categoryId: $('#categoryId').val(),
+                },
+                success: function (data) {
+                    $('#productId').find('option').remove()
+                    $(data).each(
+                        function (index, item) {
+                            $('#productId').append('<option value="' + item.id + '">' + item.name + '</option>')
+                        }
+                    );
+                }
+            })
+        }
+
+
+        var getProductdetailsByCategoryId = function () {
+            debugger;
+            $.ajax({
+                url: '@Url.Action("GetProductdetailsByProductId","Home")',
+                type: 'GET',
+                data: {
+                    productId: $('#productId').val(),
+                },
+                success: function (data) {
+                    $('#productdetailsId').find('option').remove()
+                    $(data).each(
+                        function (index, item) {
+                            $('#productdetailsId').append('<option value="' + item.id + '">' + item.name + '</option>')
+                        }
+                    );
+                }
+            })
+        }
+
+
+
+
+
+
+
+
+    </script>
+}

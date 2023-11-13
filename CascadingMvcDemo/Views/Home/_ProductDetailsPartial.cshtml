@@ -1,0 +1,22 @@
+﻿@model List<ProductDetails>
+
+<div id="productDetailsContainer">
+    <h2>Product Details</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Details Name</th>
+                <!-- Add other columns as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <!-- Add other columns as needed -->
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
